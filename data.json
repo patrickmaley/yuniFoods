@@ -1,0 +1,25 @@
+{
+  "preparation": [{
+    "title" : "Cooking Preparation",
+    "shortname" : "Cooking_Preparation",
+    "description": "The utmost care is taken in providing the best experience.",
+    "preparation": ["Cooking_Preparation_01.jpg", "Cooking_Preparation_02.jpg", "Cooking_Preparation_03.jpg", "Cooking_Preparation_04.jpg"]
+  }],
+
+"desserts": [{
+    "title" : "Desserts",
+    "shortname" : "Desserts",
+    "description": "The utmost care is taken in providing the best experience.",
+    "desserts": ["Desserts_01.jpg", "Desserts_02.jpg", "Desserts_03.jpg", "Desserts_04.jpg"]
+  }],
+
+  "social" : [{
+    "shortname" : "twitter",
+    "img" : "/images/socialmedia/twitter.png",
+    "url" : "None"
+  },{
+    "shortname" : "facebook",
+    "img" : "/images/socialmedia/facebook.png",
+    "url" : "http://www.facebook.com/yunifoods"
+  }]
+}
