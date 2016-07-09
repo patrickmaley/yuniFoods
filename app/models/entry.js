@@ -2,7 +2,6 @@
 // load the things we need
 var mongoose = require('mongoose');
 
-
 // define the schema for our user model
 var userSchema = mongoose.Schema({
     local            : {
@@ -11,7 +10,6 @@ var userSchema = mongoose.Schema({
         image		: String,
         date		: Date
     },
-   
 });
 
 // create the model for users and expose it to our app

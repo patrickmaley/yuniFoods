@@ -1,20 +1,43 @@
-// var express = require('express');
-// var router = express.Router();
-// var appdata = require('../data.json');
-
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { 
-//      title: 'Yuni Foods',
-//      items: appdata
-//   });
-// });
-
 module.exports = function(app, passport, jsondata, mongoose) {
     var fs = require('fs');
+    var url = require('url');
+
     var Entry = require('../app/models/entry');
     mongoose.connection.on("open", function() {
         console.log("mongodb is connected!!");
+    });
+
+    app.get("/delete/:id", function(req, res) {
+            Entry.find({ '_id': req.originalUrl.substr(8) }).remove(function(err, doc) {
+                if (err) return res.send(500, { error: err });
+                else res.redirect('/profile');
+            });
+        
+    });
+
+    app.post("/create/:id", function(req, res) {
+        var fstream;
+        var imageName;
+        var foodDescription;
+        var foodTitle;
+        // console.log(req.body.foodDescription);
+        // console.log("BUSBOY:  " + req.busboy.foodDescription);
+        req.pipe(req.busboy);
+        req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
+            if (key === 'foodDescription') foodDescription = value;
+            if (key === 'title') foodTitle = value;
+            console.log("Value " + value + "key: " + key);
+        });
+     
+        req.busboy.on('finish', function() {
+               // console.log(req.body.foodDescription);
+               // console.log("Food Description value: " + foodDescription);
+            Entry.findOneAndUpdate({ '_id': req.originalUrl.substr(8) }, { "local.title": foodTitle, "local.entry": foodDescription }, { upsert: true }, function(err, doc) {
+                if (err) return res.send(500, { error: err });
+                else res.redirect('/profile');
+            });
+        });
+
     });
 
     app.post("/create", function(req, res) {
@@ -22,8 +45,8 @@ module.exports = function(app, passport, jsondata, mongoose) {
         var imageName;
         var foodDescription;
         var foodTitle;
-        console.log(req.body.foodDescription);
-        console.log("BUSBOY:  " + req.busboy.foodDescription);
+        // console.log(req.body.foodDescription);
+        // console.log("BUSBOY:  " + req.busboy.foodDescription);
         req.pipe(req.busboy);
         req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
             if (key === 'foodDescription') foodDescription = value;
@@ -32,8 +55,8 @@ module.exports = function(app, passport, jsondata, mongoose) {
         });
         req.busboy.on('file', function(fieldname, file, filename) {
             imageName = filename;
-            console.log("This is the images name " + Object.prototype.toString.call(filename));
-            console.log("Uploading: " + filename);
+            // console.log("This is the images name " + Object.prototype.toString.call(filename));
+            // console.log("Uploading: " + filename);
             fstream = fs.createWriteStream(__dirname + "/../public/images/" + filename);
             file.pipe(fstream);
             fstream.on('close', function() {
@@ -49,7 +72,7 @@ module.exports = function(app, passport, jsondata, mongoose) {
                 });
                 console.log(entry);
                 entry.save(function(err, todo, count) {
-                   // console.log(todo);
+                    // console.log(todo);
 
                     res.redirect('/');
 
@@ -57,10 +80,6 @@ module.exports = function(app, passport, jsondata, mongoose) {
                 console.log("Finished");
             });
         });
-
-
-
-
     });
 
     app.get('/', function(req, res, next) {
@@ -70,7 +89,8 @@ module.exports = function(app, passport, jsondata, mongoose) {
                 if (err) {
                     res.render('error', { status: 500 });
                 } else {
-                    console.log(blogEntries);
+                    console.log("These are the values it is getting " + blogEntries);
+                    console.log("Test" + blogEntries[0]);
                     res.render('index', {
                         title: 'Yuni Foods',
                         items: jsondata,
@@ -84,14 +104,45 @@ module.exports = function(app, passport, jsondata, mongoose) {
 
     // show the home page (will also have our login links)
     app.get('/admin', function(req, res) {
-        res.render('admin.ejs');
+        res.render('admin.ejs', { title: "Admin Page" });
     });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user: req.user
-        });
+        Entry
+            .find({}, function(err, blogEntries) {
+                if (err) {
+                    res.render('error', { status: 500 });
+                } else {
+                    // console.log("These are the values it is getting " + blogEntries);
+                    res.render('profile', {
+                        title: 'Yuni Foods',
+                        items: jsondata,
+                        entries: blogEntries
+                    });
+                }
+            });
+    });
+
+    app.get('/profile/:id', isLoggedIn, function(req, res) {
+        // console.log("Hello");
+        // console.log("This is req" + req);
+        // console.log("This is url " + req.originalUrl.substr(8));
+
+        Entry
+            .findOne({ '_id': req.originalUrl.substr(9) }, function(err, blogEntries) {
+                if (err) {
+                    res.render('error', { status: 500 });
+                } else {
+
+                    console.log("These are the values it is getting " + blogEntries);
+                    res.render('profile', {
+                        title: 'Yuni Foods',
+                        items: jsondata,
+                        entries: blogEntries
+                    });
+                }
+            });
     });
 
     // LOGOUT ==============================
@@ -108,7 +159,10 @@ module.exports = function(app, passport, jsondata, mongoose) {
     // LOGIN ===============================
     // show the login form
     app.get('/login', function(req, res) {
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {
+            message: req.flash('loginMessage'),
+            title: "Login Page"
+        });
     });
 
     // process the login form

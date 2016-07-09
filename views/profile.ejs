@@ -4,31 +4,23 @@
 
 <head>
     <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <style>
-    body {
-        padding-top: 80px;
-        word-wrap: break-word;
-    }
-    </style>
+    <% include partials/template/head.ejs %>
 </head>
 
 <body>
-    <!--     <form action="/create" method="post" accept-charset="utf-8">
-  <input type="text" name="content" />
-</form>
- -->
-    <div class="container">
+    <% if(entries.length > 1){ %>
+
+    <div class="container backgroundFont">
         <div class="row">
-            <div class="col-lg-6">
-                <h3> Add new item</h3>
+             <h3> Add new item</h3>
+            <div class="col-lg-8">
                 <form action="/create" method="POST" enctype="multipart/form-data" role="form" accept-charset="utf-8" class="form-horizontal">
                     <div class="form-group">
-                  <label for="usr">Title:</label>
-                  <input type="text" class="form-control" name="title">
-                </div>
+                          <fieldset class="form-group">
+                        <label for="usr">Title:</label>
+                        <input type="text" class="form-control" name="title">
+                         </fieldset>
+                    </div>
                     <div class="form-group">
                         <fieldset class="form-group">
                             <label for="foodDescription">Item Description</label>
@@ -38,20 +30,79 @@
                     <fieldset class="form-group">
                         <label for="exampleInputFile">File input</label>
                         <input type="file" class="form-control-file" name="exampleInputFile">
-                        <small class="text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                        <!-- <small class="text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small> -->
+                        <br />
                     </fieldset>
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Search</button>
+                        <div >
+                            <button type="submit" class="btn btn-default">Upload</button>
                         </div>
                     </div>
                 </form>
-               
-            </div>
+            </div><!-- col-lg-12 -->
+        </div><!-- row -->
+    </div><!-- container backgroundFont -->
+    <div class="container backgroundFont">
+    <div class="list-group row">
+    <h3> Edit Entries</h3>
+        <% entries.forEach(function(entry) { %>
+
+        <div class="panel panel-default col-sm-8">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>
+                  <a href="/profile/<%= entry._id%>" class="list-group-item col-sm-6">
+                    <span class="glyphicon glyphicon-file"></span><%= entry.local.title %> 
+                   </a>
+                </td>
+                <td class="text-right text-nowrap">
+                    <a href="/delete/<%= entry._id%>">
+                         <span class="glyphicon glyphicon-trash gi-2x"></span>
+                    </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <% }); %>
     </div>
+    </div>
+    <% } else{ %>
 
-
+        <div class="container backgroundFont">
+            <h3> Edit item</h3>
+        <div class="row">
+            <div class="col-lg-6">
+             
+                <form action="/create/<%= entries._id%>" method="POST" enctype="multipart/form-data" role="form" accept-charset="utf-8" class="form-horizontal">
+                    <div class="form-group">
+                          <fieldset class="form-group">
+                        <label for="usr">Title:</label>
+                        <input type="text" class="form-control" name="title" value="<%=entries.local.title %>">
+                         </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label for="foodDescription">Item Description</label>
+                            <textarea name="foodDescription" class="form-control" id="exampleTextarea" rows="3" ><%=entries.local.entry %></textarea>
+                        </fieldset>
+                    </div>
+                    <!-- <fieldset class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" class="form-control-file" name="exampleInputFile">
+                        <br />
+                    </fieldset> -->
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-default">Upload</button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- col-lg-12 -->
+        </div><!-- row -->
+    </div><!-- container backgroundFont -->
+    <% } %>
     <% include partials/template/jsdefaults.ejs %>
 </body>
 
