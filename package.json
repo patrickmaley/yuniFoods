@@ -1,13 +1,19 @@
 {
   "name": "yunifoods",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.1.0",
+    "npm": "3.8.6"
+  }
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node bin/www"
   },
+
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.15.1",
+    "bower": "latest",
     "connect-busboy": "0.0.2",
     "connect-flash": "latest",
     "cookie-parser": "~1.4.3",
