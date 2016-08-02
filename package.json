@@ -5,9 +5,7 @@
     "node": "6.1.0",
     "npm": "3.8.6"
   },
-  // "scripts": {
-  //   "start": "node ./bin/www"
-  // },
+  
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.15.1",
