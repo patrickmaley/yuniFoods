@@ -1,0 +1,67 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+
+<head>
+    <title>Node Authentication</title>
+    <% include partials/template/head.ejs %>
+</head>
+
+<body>
+<a href="/"><button>Home</button></a>
+<a href="/profile"><button>Profile</button></a>
+    <div class="container backgroundFont">
+        <h3> Edit item</h3>
+        <div class="row">
+            <div class="col-sm-6">
+                <form action="/create/<%= entries._id%>" method="POST" enctype="multipart/form-data" role="form" accept-charset="utf-8" class="form-horizontal">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label for="usr">Title:</label>
+                            <input type="text" class="form-control" name="title" value="<%=entries.local.title %>">
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label for="foodDescription">Item Description</label>
+                            <textarea name="foodDescription" class="form-control" id="exampleTextarea" rows="3"><%=entries.local.entry %>
+                            </textarea>
+                        </fieldset>
+                    </div>
+
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label for="imageDescription">Loaded Images: Delete if not needed</label>
+                            <textarea name="imageDescription" class="form-control" id="exampleTextarea" rows="3"><% if(entries.local.image.length > 0){ %><% for(var i =0; i <entries.local.image.length; i++){%><%=entries.local.image[i].name%>&#10;<%}}%></textarea>
+                        </fieldset>
+                    </div>
+
+                       <div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" class="this-is-your-class form-control-file" name="exampleInputFile"/>
+                        <div id="T7-list">
+
+                        </div>
+                       <!--  <input multiple class="multi" accept="gif|jpg|png" name="exampleInputFile"/> -->
+                        <!--    <input type="file" class="form-control-file" name="exampleInputFile"> -->
+                        <!-- <small class="text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small> -->
+                        <br />
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-default">Upload</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- col-lg-12 -->
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container backgroundFont -->
+    <% include partials/template/jsdefaults.ejs %>
+       <script src="/javascripts/edit.js"></script>
+</body>
+
+</html>

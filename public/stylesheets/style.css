@@ -39,3 +39,21 @@ textarea {
 .gi-3x{font-size: 3em;}
 .gi-4x{font-size: 4em;}
 .gi-5x{font-size: 5em;}
+
+.border {
+  border: 4px inset orange;
+  margin-top: 10px;
+}
+
+.form-group{
+
+  padding: 13px;
+}
+
+.tableBorder{
+  padding: 13px;
+}
+
+.pop:hover{
+  cursor: pointer;
+}

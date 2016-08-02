@@ -7,8 +7,10 @@ var userSchema = mongoose.Schema({
     local            : {
     	title		: String,
         entry     	: String,
-        image		: String,
-        date		: Date
+        image		: [{
+        	name    : String
+        }],
+        date		: String
     },
 });
 
