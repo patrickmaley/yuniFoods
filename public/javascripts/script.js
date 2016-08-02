@@ -4,6 +4,7 @@
         $('.imagepreview').attr('src', $(this).find('img').attr('src'));
         $('#imagemodal').modal('show');   
 });
+ 
 $(document).ready(function () {
 
 var menu = $('.menu');
